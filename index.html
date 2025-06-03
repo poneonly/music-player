@@ -68,6 +68,8 @@
     const cdThumb = $('.cd-thumb')
     const audio = $('#audio')
     const cd = $('.cd')
+    const playBtn = $('.btn-toggle-play')
+    const player = $('.player')
 
     const app = {
 
@@ -145,11 +147,19 @@
 
         handleEvents: function() {
             const cdWidth = cd.offsetWidth
+
+            // Process zoom in, zoom out CD 
             document.onscroll = function() {
                 const scrollTop = window.scrollY || document.documentElement.scrollTop
                 const newCdWidth = cdWidth - scrollTop
                 cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0
                 cd.style.opacity = newCdWidth / cdWidth
+            }
+
+            // Process click play/pause
+            playBtn.onclick = function() {
+                audio.play()
+                player.classList.add('playing')
             }
         },
         loadCurrentSong: function() {
