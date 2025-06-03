@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="index.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -22,7 +21,7 @@
 
       <!-- CD -->
       <div class="cd">
-        <div class="cd-thumb" style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg');"></div>
+        <div class="cd-thumb" style="background-image: url('./assets/images/congdien1.png');"></div>
       </div>
 
       <!-- Control -->
@@ -54,41 +53,7 @@
 
     <!-- Playlist -->
     <div class="playlist">
-      <!-- Song Item -->
-      <div class="song">
-        <div class="thumb" style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg');"></div>
-        <div class="body">
-          <h3 class="title">Music name</h3>
-          <p class="author">Singer</p>
-        </div>
-        <div class="option">
-          <i class="fas fa-ellipsis-h"></i>
-        </div>
-      </div>
-
-      <!-- Song Item -->
-      <div class="song">
-        <div class="thumb" style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg');"></div>
-        <div class="body">
-          <h3 class="title">Music name</h3>
-          <p class="author">Singer</p>
-        </div>
-        <div class="option">
-          <i class="fas fa-ellipsis-h"></i>
-        </div>
-      </div>
-
-      <!-- Song Item -->
-      <div class="song">
-        <div class="thumb" style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg');"></div>
-        <div class="body">
-          <h3 class="title">Music name</h3>
-          <p class="author">Singer</p>
-        </div>
-        <div class="option">
-          <i class="fas fa-ellipsis-h"></i>
-        </div>
-      </div>
+        <!-- Song -->
     </div>
   </div>
 
@@ -98,5 +63,174 @@
 <script>
     const $ = document.querySelector.bind(document)
     const $$ = document.querySelectorAll.bind(document)
+
+    const heading = $('header h2')
+    const cdThumb = $('.cd-thumb')
+    const audio = $('#audio')
+    const cd = $('.cd')
+
+    const app = {
+
+        currentIndex: 0,
+
+        songs: [
+            {
+                name: 'Tình Ca',
+                singer: 'Thu Phương, Bùi Lan Hương, Hoàng Yến Chibi',
+                path: './assets/songs/tinh_ca.mp3',
+                image: './assets/images/congdien1.png'
+            },
+            {
+                name: 'Phong Nữ X Cô Đôi Thượng Ngàn',
+                singer: 'Kiều Anh',
+                path: './assets/songs/phong_nu_cdtn.mp3',
+                image: './assets/images/solo.png'
+            },
+            {
+                name: 'Diva',
+                singer: 'Tuimi, Ngọc Phước, Thảo Trang',
+                path: './assets/songs/diva.mp3',
+                image: './assets/images/congdien1.png'
+            },
+            {
+                name: 'In The Dark',
+                singer: 'Hoàng Yến Chibi, Ngọc Phước, Thảo Trang',
+                path: './assets/songs/in_the_dark.mp3',
+                image: './assets/images/congdien1.png'
+            },
+            {
+                name: 'Một Cú Lừa',
+                singer: 'Kiều Anh, DJ Mie, Châu Tuyết Vân, Xuân Nghi',
+                path: './assets/songs/mot_cu_lua.mp3',
+                image: './assets/images/solo.png'
+            },
+            {
+                name: 'Nhan SSắc',
+                singer: 'Minh Hằng, Hoàng Yến Chibi, Hậu Hoàng, Thu Ngọc',
+                path: './assets/songs/nhan_sac.mp3',
+                image: './assets/images/congdien1.png'
+            },
+            {
+                name: 'Phố Hoa',
+                singer: 'Thu Phương, Thảo Trang, Kiều Anh',
+                path: './assets/songs/pho_hoa.mp3',
+                image: './assets/images/solo.png'
+            }
+        ],
+        render: function() {
+            const htmls = this.songs.map(song => {
+                return `
+                    <div class="song">
+                        <div class="thumb" style="background-image: url('${song.image}');"></div>
+                        <div class="body">
+                            <h3 class="title">${song.name}</h3>
+                            <p class="author">${song.singer}</p>
+                        </div>
+                        <div class="option">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                `
+            })
+            $('.playlist').innerHTML = htmls.join('')
+        },
+
+        defineProperties: function() {
+            Object.defineProperty(this, 'currentSong', {
+                get: function() {
+                    return this.songs[this.currentIndex]
+                }
+            })
+        },
+
+        handleEvents: function() {
+            const cdWidth = cd.offsetWidth
+            document.onscroll = function() {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop
+                const newCdWidth = cdWidth - scrollTop
+                cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0
+                cd.style.opacity = newCdWidth / cdWidth
+            }
+        },
+        loadCurrentSong: function() {
+            
+
+            heading.textConent = this.currentSong.name
+            cdThumb.style.backgroundImage = `url(${this.currentSong.image})`
+            audio.src = this.currentSong.path
+            
+        },
+        start: function() {
+            // Define methods for objects
+            this.defineProperties()
+            
+            // Process events (DOM Events)
+            this.handleEvents()
+
+            // Load first song when first run
+            this.loadCurrentSong()
+
+            // Render play
+            this.render()      
+            
+        }
+    }
+
+    app.start()
+    
+
+
+
+
+
+
+
+
+
+/*
+    const songs = [
+        {
+            name: 'Tình Ca',
+            singer: 'Thu Phương, Bùi Lan Hương, Hoàng Yến Chibi',
+            path: './assets/songs/tinh_ca.mp3',
+            image: './assets/images/congdien1.png'
+        },
+        {
+            name: 'Phong Nữ X Cô Đôi Thượng Ngàn',
+            singer: 'Kiều Anh',
+            path: './assets/songs/phong_nu_cdtn.mp3',
+            image: './assets/images/solo.png'
+        },
+        {
+            name: 'Diva',
+            singer: 'Tuimi, Ngọc Phước, Thảo Trang',
+            path: './assets/songs/diva.mp3',
+            image: './assets/images/congdien1.png'
+        },
+        {
+            name: 'In The Dark',
+            singer: 'Hoàng Yến Chibi, Ngọc Phước, Thảo Trang',
+            path: './assets/songs/in_the_dark.mp3',
+            image: './assets/images/congdien1.png'
+        },
+        {
+            name: 'Một Cú Lừa',
+            singer: 'Kiều Anh, DJ Mie, Châu Tuyết Vân, Xuân Nghi',
+            path: './assets/songs/mot_cu_lua.mp3',
+            image: './assets/images/congdien1.png'
+        },
+        {
+            name: 'Nhan SSắc',
+            singer: 'Minh Hằng, Hoàng Yến Chibi, Hậu Hoàng, Thu Ngọc',
+            path: './assets/songs/nhan_sac.mp3',
+            image: './assets/images/congdien1.png'
+        },
+        {
+            name: 'Phố Hoa',
+            singer: 'Thu Phương, Thảo Trang, Kiều Anh',
+            path: './assets/songs/pho_hoa.mp3',
+            image: './assets/images/congdien1.png'
+        }, 
+    ] */
 </script>
 </html>
