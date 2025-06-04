@@ -6,6 +6,9 @@
   <title>Music Player</title>
   <link rel="stylesheet" href="index.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
+  <!-- Font Awesome CDN (Free version) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
@@ -76,6 +79,7 @@
 
     const app = {
         isPlaying: false,
+        isRandom: false,
         currentIndex: 0,
 
         songs: [
@@ -210,14 +214,29 @@
 
             // Next song
             nextBtn.onclick = function() {
-                _this.nextSong()
+                if (_this.isRandom) {
+                    _this.playRandomSong()
+                } else {
+                    _this.nextSong()
+                }
                 audio.play()
             }
 
             // Previous song
             prevBtn.onclick = function() {
-                _this.prevSong()
+                if (_this.isRandom) {
+                    _this.playRandomSong()
+                } else {
+                    _this.prevSong()
+                }
                 audio.play()
+            }
+
+            // Random song on/off
+            randomBtn.onclick = function(e) {
+                _this.isRandom = !_this.isRandom
+                randomBtn.classList.toggle('active', _this.isRandom)
+
             }
                 
         },
@@ -242,7 +261,14 @@
             }
             this.loadCurrentSong()
         },
-        
+        playRandomSong: function() {
+            let newIndex
+            do {
+                newIndex = Math.floor(Math.random() * this.songs.length)
+            } while (newIndex === this.currentIndex)
+            this.currentIndex = newIndex
+            this.loadCurrentSong()
+        },
         
         start: function() {
             // Define methods for objects
