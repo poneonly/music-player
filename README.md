@@ -85,7 +85,7 @@ cd music-player
 ## 🤝 Contributing
 
 Pull requests are welcome!
-If you have suggestions for improvements or new features, feel free to fork this project and submit a PR.
+If you have suggestions for improvements or new features, feel free to fork this project.
 
 ---
 
@@ -97,8 +97,9 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 ## 👨‍💻 Author
 
-**Aiden Tran (Trần Lưu Hồng Phương)**
-IT Major — Practicing JavaScript and web development through small personal projects.
+**Aiden Tran**
+IT Major — Network Engineering
+
 🔗 GitHub: [poneonly](https://github.com/poneonly)
 
 ---
