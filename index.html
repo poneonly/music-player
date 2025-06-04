@@ -76,10 +76,12 @@
     const nextBtn = $('.btn-next')
     const prevBtn = $('.btn-prev')
     const randomBtn = $('.btn-random')
+    const repeatBtn = $('.btn-repeat')
 
     const app = {
         isPlaying: false,
         isRandom: false,
+        isRepeated: false,
         currentIndex: 0,
 
         songs: [
@@ -237,6 +239,21 @@
                 _this.isRandom = !_this.isRandom
                 randomBtn.classList.toggle('active', _this.isRandom)
 
+            }
+
+            // Process song end
+            audio.onended = function() {
+                if (_this.isRepeated) {
+                    audio.play()
+                } else {
+                    nextBtn.click()
+                }
+            }
+
+            // Repeat song when end 
+            repeatBtn.onclick = function(e) {
+                _this.isRepeated = !_this.isRepeated
+                repeatBtn.classList.toggle('active', _this.isRepeated)
             }
                 
         },
